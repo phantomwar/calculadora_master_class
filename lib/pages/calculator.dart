@@ -23,8 +23,9 @@ class _CalculadoraState extends State<Calculadora> {
 
   @override
   Widget build(BuildContext context) {
-    double buttonHeight = MediaQuery.of(context).size.height * 0.1;
-    double buttonWidth = MediaQuery.of(context).size.width * 0.22;
+    final size = MediaQuery.of(context).size;
+    double buttonHeight = size.height * 0.1;
+    double buttonWidth = size.width * 0.22;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -38,44 +39,49 @@ class _CalculadoraState extends State<Calculadora> {
         children: [
           Expanded(
             flex: 1,
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment.topRight,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      controller.lastOperation ?? '0',
-                      textAlign: TextAlign.end,
-                      style:
-                          Constants.calculatorTextStyle.copyWith(fontSize: 18),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          controller.lastOperation ?? '0',
+                          textAlign: TextAlign.end,
+                          style: Constants.calculatorTextStyle
+                              .copyWith(fontSize: 18),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 5,
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      controller.result ?? '0',
-                      textAlign: TextAlign.end,
-                      style: Constants.calculatorTextStyle,
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          controller.result ?? '0',
+                          textAlign: TextAlign.end,
+                          style: Constants.calculatorTextStyle,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ]),
+            ),
           ),
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.02,

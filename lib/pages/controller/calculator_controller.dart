@@ -10,7 +10,7 @@ class CalculatorController extends ChangeNotifier {
   bool isAnotherOperation = false;
 
   final regexNumber = RegExp(r'^[0-9.]');
-  final regexOperation = RegExp(r'[+\-*/]');
+  final regexOperation = RegExp(r'[+\-*x/]');
 
   void clean() {
     result = null;
@@ -38,7 +38,6 @@ class CalculatorController extends ChangeNotifier {
   void cleanValue(String value) {
     if (value == 'C') {
       result = '0';
-      lastOperation = 0.toString();
     } else if (value == 'CE') {
       clean();
     }
@@ -48,13 +47,13 @@ class CalculatorController extends ChangeNotifier {
     if (buttonValue.contains(regexNumber)) {
       result = (result ?? '') + buttonValue;
       notifyListeners();
-    } else if (buttonValue.contains(regexOperation) || buttonValue == 'x') {
+    } else if (buttonValue.contains(regexOperation)) {
       value1 = result;
       operation = buttonValue;
       lastOperation = (result ?? '') + buttonValue;
       result = '';
       notifyListeners();
-    } else if (buttonValue.contains(regexOperation) || buttonValue == 'x') {
+    } else if (buttonValue.contains(regexOperation)) {
       value1 = result;
       operation = buttonValue;
       lastOperation = (result ?? '') + buttonValue;
@@ -63,7 +62,7 @@ class CalculatorController extends ChangeNotifier {
     } else if (buttonValue == '=' && operation != null && value1 != null) {
       iqualOperation();
     } else if (buttonValue == 'C' || buttonValue == 'CE') {
-      clean();
+      cleanValue(buttonValue);
     }
   }
 }
