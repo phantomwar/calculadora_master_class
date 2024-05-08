@@ -1,33 +1,27 @@
+import 'package:calculadora_master_class/constants/buttons_list.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorController extends ChangeNotifier {
   String? value1;
   String? value2;
-  String? result;
-  String? lastResult;
   String? operation;
   String? lastOperation;
-  bool isAnotherOperation = false;
-
-  final regexNumber = RegExp(r'^[0-9.]');
-  final regexOperation = RegExp(r'[+\-*x/]');
+  String? display;
 
   void clean() {
-    result = null;
     operation = null;
+    display = null;
     lastOperation = null;
     value1 = null;
     value2 = null;
-    lastResult = null;
 
     notifyListeners();
   }
 
-  void iqualOperation() {
-    value2 = result;
-    lastOperation = '$lastOperation $value2';
-    result = mathOperations(operation!, value1!, value2!);
-    lastResult = result;
+  void iqualOperation(String value) {
+    value2 = value;
+    lastOperation = '$lastOperation$value';
+    display = mathOperations(operation!, value1!, value2!);
     value1 = null;
     value2 = null;
     operation = null;
@@ -35,35 +29,40 @@ class CalculatorController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addValue1({required String buttonValue}) {
+    operation = buttonValue;
+    value1 = display;
+    lastOperation = '$value1$operation';
+    display = null;
+  }
+
   void cleanValue(String value) {
-    if (value == 'C') {
-      result = '0';
+    if (value == 'C' || value == 'c') {
+      display = null;
+      notifyListeners();
     } else if (value == 'CE') {
       clean();
     }
   }
 
   void listemButtonValue(String buttonValue) {
-    if (buttonValue.contains(regexNumber)) {
-      result = (result ?? '') + buttonValue;
-      notifyListeners();
-    } else if (buttonValue.contains(regexOperation)) {
-      value1 = result;
-      operation = buttonValue;
-      lastOperation = (result ?? '') + buttonValue;
-      result = '';
-      notifyListeners();
-    } else if (buttonValue.contains(regexOperation)) {
-      value1 = result;
-      operation = buttonValue;
-      lastOperation = (result ?? '') + buttonValue;
-      result = '';
-      notifyListeners();
-    } else if (buttonValue == '=' && operation != null && value1 != null) {
-      iqualOperation();
+    if (buttonValue.contains(Constants.regexNumber)) {
+      display = display == null ? buttonValue : '$display$buttonValue';
+    } else if (buttonValue.contains(Constants.regexOperation)) {
+      if (buttonValue.contains('=') && value1 != null) {
+        iqualOperation(display!);
+      } else if (value1 == null && buttonValue != '=') {
+        addValue1(buttonValue: buttonValue);
+        // } else if (value2 == null) {
+        //   value2 = display;
+        //   iqualOperation(value2!);
+        //   operation = buttonValue;
+        //   display = '$display$buttonValue';
+      }
     } else if (buttonValue == 'C' || buttonValue == 'CE') {
       cleanValue(buttonValue);
     }
+    notifyListeners();
   }
 }
 

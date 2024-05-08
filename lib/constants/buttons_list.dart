@@ -25,4 +25,7 @@ class Constants {
 
   static const calculatorTextStyle =
       TextStyle(fontSize: 60, color: Colors.white, fontFamily: 'digital-7');
+
+  static final regexNumber = RegExp(r'^[0-9.]');
+  static final regexOperation = RegExp(r'[+\-*x=/]');
 }
